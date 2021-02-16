@@ -1,0 +1,1 @@
+# Sensor_de_Temperatura_com_NodeMCU
