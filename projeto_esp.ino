@@ -6,7 +6,6 @@
 #include <ESP8266mDNS.h>
 #include <max6675.h>
 
-
 //-----------------------------------------------------
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 //-----------------------------------------------------
@@ -16,7 +15,6 @@ int thermoCS = D5;
 int thermoCLK = D6;
 int led = D7;
 MAX6675 thermocouple(thermoCLK, thermoCS, thermoDO);
-
 
 const char* ssid = "********"; // insiria aqui o nome da rede wifi.
 const char* password = "********"; // insiria aqui a senha de rede.
@@ -75,12 +73,9 @@ void setup(void){
   }
 
   server.on("/", handleRoot);
-
   server.onNotFound(handleNotFound);
-
   server.begin();
   Serial.println("HTTP server started");
-
 }
 
 void loop(void){
@@ -88,7 +83,6 @@ void loop(void){
   delay(100);
   digitalWrite(led, LOW);
   server.handleClient();
-
 
  //-----------------------------------------------------
   lcd.setBacklight(HIGH);
