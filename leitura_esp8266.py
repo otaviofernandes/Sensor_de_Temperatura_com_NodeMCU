@@ -87,5 +87,5 @@ if values['c']:
     tp = 'C'
 else:
     tp = 'F'
-ani = FuncAnimation(plt.gcf(), grafico_dinamico, interval=1000)
+ani = FuncAnimation(plt.gcf(), grafico_dinamico, interval=2000)
 plt.show()
