@@ -21,7 +21,7 @@ def le_ipsalvo():
 
 
 def salva_ultimo_ip(ip):
-    arquivo = open('ipsalvo.txt', 'w')
+    arquivo = open('ipsalvo.txt', 'w')''
     arquivo.write(ip)
     arquivo.close()
 
