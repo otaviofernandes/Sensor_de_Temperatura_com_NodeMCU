@@ -14,13 +14,18 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);
 int thermoDO = D4;
 int thermoCS = D5;
 int thermoCLK = D6;
-int led = D7;
+int led_on = D7;
+int led_off = D8;
+int conexao = 0;
+int cont = 0;
+int od = 0;
+
 MAX6675 thermocouple(thermoCLK, thermoCS, thermoDO);
 
 
-const char* ssid = "************"; // insiria aqui o nome da rede wifi.
-const char* password = "*********"; // insiria aqui a senha de rede.
-int od = 0;
+const char* ssid = "TATI_TATA"; // insiria aqui o nome da rede wifi.
+const char* password = "bob_cisco"; // insiria aqui a senha de rede.
+
 
 ESP8266WebServer server(80);
 
@@ -37,7 +42,8 @@ void handleNotFound(){
 
 void setup(void){
 
- pinMode(led, OUTPUT);
+ pinMode(led_on, OUTPUT);
+ pinMode(led_off, OUTPUT);
  
  
   Serial.begin(115200);
@@ -50,11 +56,12 @@ void setup(void){
   //Serial.println("");
 
   // Wait for connection
-  while (WiFi.status() != WL_CONNECTED) {
+  while ((WiFi.status() != WL_CONNECTED) && (cont < 10)) {
     delay(500);
     Serial.print(".");
+    cont ++;
   }
-  //Serial.println("");
+  
   Serial.print("Connected to ");
   Serial.println(ssid);
   Serial.print("IP address: ");
@@ -71,42 +78,74 @@ void setup(void){
 
   server.begin();
   Serial.println("HTTP server started");
+
+  
   //-----------------------------------------------------
- Wire.begin(D2, D1);
+ Wire.begin(D1, D2);
  lcd.init();
  lcd.setBacklight(HIGH);
  lcd.setCursor(0,0);
- lcd.print("Conectando......");
+ lcd.print("Conectando");
  lcd.setCursor(0,1);
  lcd.print(ssid);
  delay(2000);
  //-----------------------------------------------------
 
+
+if (WiFi.status() != WL_CONNECTED){
+  conexao = 0;
+  }
+else{
+  conexao = 1;
+  }
 }
 
-void loop(void){
-  digitalWrite(led, HIGH);
-  delay(100);
-  digitalWrite(led, LOW);
-  server.handleClient();
-
 
  //-----------------------------------------------------
-  lcd.setBacklight(HIGH);
-  lcd.setCursor(0,0);
-  lcd.print((WiFi.localIP()));
-  lcd.setCursor(0,1);
-  String rc = String(thermocouple.readCelsius());
-  String rf = String(thermocouple.readFahrenheit());
-  lcd.print("Temp.(C): " + rc);
-  delay(1000);
-  lcd.setCursor(0,0);
-  lcd.print((WiFi.localIP()));
-  lcd.setCursor(0,1);
-  //lcd.print("Temp.(F): " + rf);
-  lcd.print("Temp.("+ String(B11011111) + "F):" + rf);
+ void loop(void){
+ lcd.setCursor(0,0);
+ lcd.print("                ");
+ lcd.setCursor(0,1);
+ lcd.print("                ");
+ 
+ if (conexao == 1){
+ Serial.print("ON-Line");
+ Serial.println("");
+ digitalWrite(led_on, HIGH);
+ delay(100);
+ digitalWrite(led_on, LOW);
   
-  delay(900);
- //-----------------------------------------------------
- od = od + 2; 
+ server.handleClient();
+ lcd.setCursor(0,0);
+ lcd.print((WiFi.localIP()));
+ lcd.setCursor(0,1);
+ String rc = String(thermocouple.readCelsius());
+ String rf = String(thermocouple.readFahrenheit());
+
+ lcd.setCursor(0,1);
+ lcd.print(rc + " C");
+ delay(1000);
+ lcd.setCursor(0,1);
+ lcd.print(rf + " F");
+ delay(900);
+}
+
+ else{
+ Serial.print("Off-Line");
+ Serial.println("");
+ digitalWrite(led_off, HIGH);
+ delay(100);
+ digitalWrite(led_off, LOW);
+ lcd.setCursor(0,0);
+ lcd.print("OFF-LINE        ");
+ String rc = String(thermocouple.readCelsius());
+ String rf = String(thermocouple.readFahrenheit());
+ lcd.setCursor(0,1);
+ lcd.print(rc + " C");
+ delay(1000);
+ lcd.setCursor(0,1);
+ lcd.print(rf + " F");
+ delay(900);
+ }
+  od = od + 2;
 }
