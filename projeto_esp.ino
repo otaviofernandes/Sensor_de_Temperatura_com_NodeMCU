@@ -23,8 +23,8 @@ int od = 0;
 MAX6675 thermocouple(thermoCLK, thermoCS, thermoDO);
 
 
-const char* ssid = "**********"; // insiria aqui o nome da rede wifi.
-const char* password = "***********"; // insiria aqui a senha de rede.
+const char* ssid = "**********"; // insira aqui o nome da rede wifi.
+const char* password = "***********"; // insira aqui a senha de rede.
 
 
 ESP8266WebServer server(80);
