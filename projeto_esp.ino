@@ -19,10 +19,8 @@ int od = 0;
 
 MAX6675 thermocouple(thermoCLK, thermoCS, thermoDO);
 
-
 const char* ssid = "**********"; // insira aqui o nome da rede wifi.
 const char* password = "***********"; // insira aqui a senha de rede.
-
 
 ESP8266WebServer server(80);
 
@@ -42,17 +40,11 @@ void setup(void){
  pinMode(led_on, OUTPUT);
  pinMode(led_off, OUTPUT);
  
- 
-  Serial.begin(115200);
-  //Serial.println("MAX6675 test");
-  // wait for MAX chip to stabilize
-  //delay(500);
-  
+ Serial.begin(115200);
+   
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
-  //Serial.println("");
-
-  // Wait for connection
+ 
   while ((WiFi.status() != WL_CONNECTED) && (cont < 10)) {
     delay(500);
     Serial.print(".");
@@ -75,7 +67,6 @@ void setup(void){
 
   server.begin();
   Serial.println("HTTP server started");
-
 
  Wire.begin(D1, D2);
  lcd.init();
