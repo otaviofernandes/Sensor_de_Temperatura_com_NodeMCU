@@ -6,10 +6,7 @@
 #include <ESP8266mDNS.h>
 #include <max6675.h>
 
-
-//-----------------------------------------------------
 LiquidCrystal_I2C lcd(0x27, 16, 2);
-//-----------------------------------------------------
 
 int thermoDO = D4;
 int thermoCS = D5;
@@ -79,8 +76,7 @@ void setup(void){
   server.begin();
   Serial.println("HTTP server started");
 
-  
-  //-----------------------------------------------------
+
  Wire.begin(D1, D2);
  lcd.init();
  lcd.setBacklight(HIGH);
@@ -89,8 +85,6 @@ void setup(void){
  lcd.setCursor(0,1);
  lcd.print(ssid);
  delay(2000);
- //-----------------------------------------------------
-
 
 if (WiFi.status() != WL_CONNECTED){
   conexao = 0;
@@ -100,9 +94,7 @@ else{
   }
 }
 
-
- //-----------------------------------------------------
- void loop(void){
+void loop(void){
  lcd.setCursor(0,0);
  lcd.print("                ");
  lcd.setCursor(0,1);
